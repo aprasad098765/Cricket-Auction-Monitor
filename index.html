@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Monitor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Home View -->
+    <div class="container active" id="home-view" style="text-align: center;">
+        <header>
+            <h1>Auction Monitor</h1>
+            <p>The ultimate tool for managing your sports auctions</p>
+        </header>
+        <button id="create-tournament-btn" class="btn-primary"
+            style="font-size: 1.2rem; padding: 1.5rem; margin-top: 2rem;">
+            Create Tournament
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+        </button>
+
+        <div id="saved-tournaments-section"
+            style="margin-top: 3rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <h3
+                style="color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                Saved Tournaments</h3>
+            <div id="saved-tournaments-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <!-- Tournament items will be injected here -->
+                <p style="color: #666; font-style: italic;">Loading saved tournaments...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

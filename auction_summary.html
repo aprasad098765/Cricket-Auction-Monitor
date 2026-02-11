@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Summary</title>
+    <!-- Reusing existing styles + specific summary styles -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes confettiPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        body {
+            background-color: #121212;
+            /* Fallback */
+            background-image: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .summary-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+            flex: 1;
+            /* Entry Animation */
+            animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .summary-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .summary-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            animation: confettiPop 0.8s ease-out 0.5s backwards;
+        }
+
+        .teams-grid-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Reuse Team Card with modifications */
+        .team-card-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .team-card-summary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .team-header-s {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .team-name-s {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .manager-name-s {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .player-list-s {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .player-item-s {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .player-price-s {
+            font-family: 'Courier New', monospace;
+            color: var(--primary-accent);
+            font-weight: bold;
+        }
+
+        .footer_actions {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .btn-restart {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-restart:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Pools UI Styles */
+        .pools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pool-column {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .pool-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-accent);
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .pool-team-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Active state for Distribution buttons */
+        .btn-secondary.active-method {
+            background: var(--primary-accent);
+            color: #000;
+            border-color: var(--primary-accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="summary-container">
+        <header class="summary-header">
+            <h1 class="summary-title" id="tournament-title">Tournament Name</h1>
+            <div class="completion-badge">Auction Completed</div>
+        </header>
+
+        <div class="teams-grid-summary" id="summary-grid">
+            <!-- Teams will be injected here -->
+        </div>
+
+        <div class="footer_actions">
+            <button class="btn-restart" id="home-btn" onclick="window.location.href='index.html'">Back to Home</button>
+            <button class="btn-primary" id="create-pools-btn"
+                style="margin-left: 1rem; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem;">Divide into
+                Pools</button>
+        </div>
+
+        <div id="pools-display-container" style="display: none; margin-top: 3rem;">
+            <h2 class="summary-title" style="font-size: 2rem; text-align: center;">Tournament Pools</h2>
+            <div class="pools-grid" id="pools-grid">
+                <!-- Generated Pools will go here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pool Configuration Modal -->
+    <div id="pool-config-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Pools</h2>
+                <button class="close-modal-btn"
+                    onclick="document.getElementById('pool-config-modal').classList.remove('open')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: Basic Config -->
+                <div id="pool-step-1">
+                    <div class="input-group">
+                        <label>Number of Pools</label>
+                        <input type="number" id="num-pools-input" min="1" value="2"
+                            style="background: rgba(255,255,255,0.1); color: #fff; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); width: 100%;">
+                    </div>
+                    <div class="input-group" style="margin-top: 1rem;">
+                        <label>Assignment Method</label>
+                        <select id="pool-method-select"
+                            style="background: rgba(255,255,255,0.1); color: #fff; padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); width: 100%;">
+                            <option value="random">Random Assignment</option>
+                            <option value="manual">Manual Assignment</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 2: Random Distribution Config (shown if Random selected) -->
+                <div id="pool-step-2-random" style="display: none; margin-top: 1rem;">
+                    <br>
+                    <hr style="border-color: rgba(255,255,255,0.1);"><br>
+                    <label>Distribution</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <button class="btn-secondary active-method" id="dist-equal-btn"
+                            onclick="app.setPoolDistribution('equal')">Equal</button>
+                        <button class="btn-secondary" id="dist-custom-btn"
+                            onclick="app.setPoolDistribution('custom')">Custom</button>
+                    </div>
+
+                    <div id="custom-dist-inputs" style="margin-top: 1rem; display: none;">
+                        <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 0.5rem;">Enter number of teams per
+                            pool:</p>
+                        <div id="pool-distribution-inputs"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.5rem;">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Manual Assignment (shown if Manual selected) -->
+                <div id="pool-step-2-manual" style="display: none; margin-top: 1rem;">
+                    <br>
+                    <hr style="border-color: rgba(255,255,255,0.1);"><br>
+                    <p style="margin-bottom: 1rem;">Assign Assign Teams to Pools:</p>
+                    <div id="manual-pool-assignment-container" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary"
+                    onclick="document.getElementById('pool-config-modal').classList.remove('open')">Cancel</button>
+                <button class="btn-primary" id="generate-pools-btn">Generate Pools</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reusing existing script logic -->
+    <script src="script.js"></script>
+    <script>
+        // Inline init for summary page specific logic to ensure it runs
+        // Though script.js will also run, we can trigger the render explicitly here if needed
+        // But script.js is designed to handle page checks. We'll update script.js to handle this page.
+    </script>
+</body>
+
+</html>

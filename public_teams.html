@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Team List - Auction Monitor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Specific overrides for public view if needed */
+        .public-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .player-list-public {
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 0.5rem;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .player-row:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Public View Container -->
+    <div class="dashboard-container" id="public-teams-view">
+        <header style="text-align: center;">
+            <h1 id="tournament-title-display">Tournament Teams</h1>
+            <p>Live Auction Status</p>
+        </header>
+
+        <div class="public-grid" id="public-teams-grid">
+            <!-- Teams injected here -->
+            <p style="text-align: center; width: 100%; color: #aaa;">Waiting for auction data...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
