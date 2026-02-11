@@ -5,9 +5,13 @@ import json
 import os
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../', static_url_path='/')
 # Enable CORS for all routes (allows requests from your HTML file)
 CORS(app)
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 DB_FILE = 'auction.db'
 

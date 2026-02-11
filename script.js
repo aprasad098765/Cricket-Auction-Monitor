@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 basePrice: auctionData.basePrice
             };
 
-            const response = await fetch('http://localhost:5000/analyze', {
+            const response = await fetch('/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // app.py expects { ...auctionData... } or { auctionData: ... }
                 // Let's send the flat auctionData object, which contains 'id' if set
 
-                const response = await fetch('http://localhost:5000/api/tournaments', {
+                const response = await fetch('/api/tournaments', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(auctionData)
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!listContainer) return;
 
         try {
-            const response = await fetch('http://localhost:5000/api/tournaments');
+            const response = await fetch('/api/tournaments');
             if (response.ok) {
                 const tournaments = await response.json();
                 renderTournamentList(tournaments, listContainer);
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteTournament(id) {
         try {
-            const response = await fetch(`http://localhost:5000/api/tournaments/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/api/tournaments/${id}`, { method: 'DELETE' });
             if (response.ok) {
                 // Show Undo Toast
                 showUndoToast(id);
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function restoreTournament(id) {
         try {
-            const response = await fetch(`http://localhost:5000/api/tournaments/${id}/restore`, { method: 'POST' });
+            const response = await fetch(`/api/tournaments/${id}/restore`, { method: 'POST' });
             if (response.ok) {
                 fetchTournaments(); // Refresh list to show it again
             } else {
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadTournamentFromDB(id) {
         try {
-            const response = await fetch(`http://localhost:5000/api/tournaments/${id}`);
+            const response = await fetch(`/api/tournaments/${id}`);
             if (response.ok) {
                 const data = await response.json();
 
