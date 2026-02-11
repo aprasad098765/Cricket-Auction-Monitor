@@ -3,7 +3,11 @@ from flask_cors import CORS
 import sqlite3
 import json
 import os
+import sys
 from datetime import datetime
+
+# Ensure the backend directory is in the path if running from root
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__, static_folder='../', static_url_path='/')
 # Enable CORS for all routes (allows requests from your HTML file)
