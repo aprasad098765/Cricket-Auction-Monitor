@@ -929,13 +929,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const remainingSlots = totalSlots - slotsFilled;
         const avgBudgetPerSlot = remainingSlots > 0 ? Math.floor(team.budget / remainingSlots) : 0;
 
+        // Calculate Max Bid for ONE player (reserving base price for others)
+        let maxBid = 0;
+        if (remainingSlots > 0) {
+            maxBid = (remainingSlots === 1)
+                ? team.budget
+                : team.budget - (basePrice * (remainingSlots - 1));
+            if (maxBid < 0) maxBid = 0;
+        }
+
         // Default Analysis
         let status = { label: 'Balanced', color: 'var(--text-secondary)', icon: '⚖️' };
 
         // 1. Completion Check
         if (remainingSlots === 0) {
             status = { label: 'Complete', color: '#10b981', icon: '✅' };
-            return { status, avgBudget: 0, remainingSlots };
+            return { status, avgBudget: 0, maxBid: 0, remainingSlots };
         }
 
         // 2. Risk Calculation (Most Critical)
@@ -943,7 +952,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const riskThreshold = basePrice > 0 ? basePrice * 1.5 : (totalBudget / totalSlots) * 0.2;
         if (avgBudgetPerSlot < riskThreshold) {
             status = { label: 'High Risk', color: '#ef4444', icon: '⚠️' };
-            return { status, avgBudget: avgBudgetPerSlot, remainingSlots };
+            return { status, avgBudget: avgBudgetPerSlot, maxBid, remainingSlots };
         }
 
         // 3. Strategy Type (Relative Spending vs Filling)
@@ -960,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
             status = { label: 'Smart Buy', color: '#10b981', icon: '🧠' };
         }
 
-        return { status, avgBudget: avgBudgetPerSlot, remainingSlots };
+        return { status, avgBudget: avgBudgetPerSlot, maxBid, remainingSlots };
     }
 
     function renderDashboard() {
@@ -1006,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="budget-info">
                     <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.2rem; color: #aaa;">
                          <span>Remaining Credits</span>
-                         <span title="Max average bid for remaining players">Avg: ~${analysis.avgBudget.toLocaleString()} / player</span>
+                         <span title="Max allowabale bid for a player">Max Bid: ${analysis.maxBid.toLocaleString()}</span>
                     </div>
                     <div class="budget-value">${team.budget.toLocaleString()}</div>
                     <div class="budget-bar">
@@ -1087,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="budget-info" style="margin-bottom:1rem;">
                     <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.2rem; color: #aaa;">
                          <span>Remaining Credits</span>
-                         <span title="Max average bid for remaining players">Avg: ~${analysis.avgBudget.toLocaleString()} / player</span>
+                         <span title="Max allowabale bid for a player">Max Bid: ${analysis.maxBid.toLocaleString()}</span>
                     </div>
                     <div class="budget-value" style="font-size:1.2rem;">${team.budget.toLocaleString()}</div>
                     <div class="budget-bar">
